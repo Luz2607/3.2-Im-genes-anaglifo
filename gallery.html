@@ -8,11 +8,13 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cdefs%3E%3ClinearGradient id='a' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%236366f1'/%3E%3Cstop offset='100%25' stop-color='%238b5cf6'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ccircle cx='16' cy='16' r='16' fill='url(%23a)'/%3E%3Cellipse cx='16' cy='16' rx='10' ry='6' fill='%231a1a2e'/%3E%3Ccircle cx='16' cy='16' r='4' fill='%23f8fafc'/%3E%3Ccircle cx='16' cy='16' r='2' fill='%230f0f23'/%3E%3C/svg%3E">
+
     <link rel="stylesheet" href="css/main.css">
 </head>
 <body class="dark-theme">
     <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg fixed-top">
+    <nav class="navbar navbar-expand-lg fixed-top navbar-dark">
         <div class="container">
             <a class="navbar-brand" href="index.html">
                 <i class="bi bi-eye-fill me-2"></i>
@@ -20,7 +22,7 @@
                 <span class="brand-pro">Verse</span>
             </a>
             
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-label="Abrir menú">
                 <span class="navbar-toggler-icon"></span>
             </button>
             
@@ -30,7 +32,7 @@
                         <a class="nav-link" href="index.html">Inicio</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="gallery.html">Galería</a>
+                        <a class="nav-link active" href="gallery.html" aria-current="page">Galería</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="about.html">Acerca de</a>
@@ -69,19 +71,19 @@
         <div class="container">
             <div class="row">
                 <div class="col-12">
-                    <ul class="nav nav-pills justify-content-center" id="disparityTabs">
-                        <li class="nav-item">
-                            <a class="nav-link active" data-bs-toggle="pill" href="#positive">
+                    <ul class="nav nav-pills justify-content-center" id="disparityTabs" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <a class="nav-link active" id="positive-tab" data-bs-toggle="pill" href="#positive" role="tab" aria-controls="positive" aria-selected="true">
                                 <i class="bi bi-arrow-up-circle me-2"></i>Disparidad Positiva
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" data-bs-toggle="pill" href="#neutral">
+                        <li class="nav-item" role="presentation">
+                            <a class="nav-link" id="neutral-tab" data-bs-toggle="pill" href="#neutral" role="tab" aria-controls="neutral" aria-selected="false">
                                 <i class="bi bi-dash-circle me-2"></i>Disparidad Neutra
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" data-bs-toggle="pill" href="#negative">
+                        <li class="nav-item" role="presentation">
+                            <a class="nav-link" id="negative-tab" data-bs-toggle="pill" href="#negative" role="tab" aria-controls="negative" aria-selected="false">
                                 <i class="bi bi-arrow-down-circle me-2"></i>Disparidad Negativa
                             </a>
                         </li>
@@ -97,27 +99,27 @@
             <div class="tab-content" id="disparityTabsContent">
                 
                 <!-- Disparidad Positiva -->
-                <div class="tab-pane fade show active" id="positive">
+                <div class="tab-pane fade show active" id="positive" role="tabpanel" aria-labelledby="positive-tab">
                     <div class="disparity-info mb-4">
                         <h3><i class="bi bi-arrow-up-circle text-success me-2"></i>Disparidad Positiva</h3>
-                        <p>Los objetos aparecen delante del plano de la pantalla, creando un efecto de profundidad hacia el espectador.</p>
+                        <p>Los objetos aparecen <strong>detrás del plano de la pantalla</strong>, creando profundidad hacia el interior.</p>
                     </div>
                     
                     <div id="positiveCarousel" class="carousel slide stereo-carousel" data-bs-ride="carousel">
                         <div class="carousel-indicators">
-                            <button type="button" data-bs-target="#positiveCarousel" data-bs-slide-to="0" class="active"></button>
-                            <button type="button" data-bs-target="#positiveCarousel" data-bs-slide-to="1"></button>
-                            <button type="button" data-bs-target="#positiveCarousel" data-bs-slide-to="2"></button>
-                            <button type="button" data-bs-target="#positiveCarousel" data-bs-slide-to="3"></button>
-                            <button type="button" data-bs-target="#positiveCarousel" data-bs-slide-to="4"></button>
-                            <button type="button" data-bs-target="#positiveCarousel" data-bs-slide-to="5"></button>
-                            <button type="button" data-bs-target="#positiveCarousel" data-bs-slide-to="6"></button>
-                            <button type="button" data-bs-target="#positiveCarousel" data-bs-slide-to="7"></button>
-                            <button type="button" data-bs-target="#positiveCarousel" data-bs-slide-to="8"></button>
-                            <button type="button" data-bs-target="#positiveCarousel" data-bs-slide-to="9"></button>
-                            <button type="button" data-bs-target="#positiveCarousel" data-bs-slide-to="10"></button>
-                            <button type="button" data-bs-target="#positiveCarousel" data-bs-slide-to="11"></button>
-                            <button type="button" data-bs-target="#positiveCarousel" data-bs-slide-to="12"></button>
+                            <button type="button" data-bs-target="#positiveCarousel" data-bs-slide-to="0" class="active" aria-label="Positiva 1"></button>
+                            <button type="button" data-bs-target="#positiveCarousel" data-bs-slide-to="1" aria-label="Positiva 2"></button>
+                            <button type="button" data-bs-target="#positiveCarousel" data-bs-slide-to="2" aria-label="Positiva 3"></button>
+                            <button type="button" data-bs-target="#positiveCarousel" data-bs-slide-to="3" aria-label="Positiva 4"></button>
+                            <button type="button" data-bs-target="#positiveCarousel" data-bs-slide-to="4" aria-label="Positiva 5"></button>
+                            <button type="button" data-bs-target="#positiveCarousel" data-bs-slide-to="5" aria-label="Positiva 6"></button>
+                            <button type="button" data-bs-target="#positiveCarousel" data-bs-slide-to="6" aria-label="Positiva 7"></button>
+                            <button type="button" data-bs-target="#positiveCarousel" data-bs-slide-to="7" aria-label="Positiva 8"></button>
+                            <button type="button" data-bs-target="#positiveCarousel" data-bs-slide-to="8" aria-label="Positiva 9"></button>
+                            <button type="button" data-bs-target="#positiveCarousel" data-bs-slide-to="9" aria-label="Positiva 10"></button>
+                            <button type="button" data-bs-target="#positiveCarousel" data-bs-slide-to="10" aria-label="Positiva 11"></button>
+                            <button type="button" data-bs-target="#positiveCarousel" data-bs-slide-to="11" aria-label="Positiva 12"></button>
+                            <button type="button" data-bs-target="#positiveCarousel" data-bs-slide-to="12" aria-label="Positiva 13"></button>
                         </div>
                         
                         <div class="carousel-inner">
@@ -126,8 +128,8 @@
                                     <img src="imagenes/side by side/positiva 1.1.jpg" class="left-image" alt="Disparidad Positiva 1 - Ojo Izquierdo">
                                     <img src="imagenes/side by side/positiva 1.2.jpg" class="right-image" alt="Disparidad Positiva 1 - Ojo Derecho">
                                     <div class="image-overlay">
-                                        <h5>Efecto de Emergencia Básico</h5>
-                                        <p>Objetos simples que sobresalen del plano de la pantalla</p>
+                                        <h5>Profundidad Básica</h5>
+                                        <p>Elementos que se hunden ligeramente en la pantalla</p>
                                     </div>
                                 </div>
                             </div>
@@ -136,8 +138,8 @@
                                     <img src="imagenes/side by side/positiva 2.1.jpg" class="left-image" alt="Disparidad Positiva 2 - Ojo Izquierdo">
                                     <img src="imagenes/side by side/positiva 2.2.jpg" class="right-image" alt="Disparidad Positiva 2 - Ojo Derecho">
                                     <div class="image-overlay">
-                                        <h5>Profundidad Moderada</h5>
-                                        <p>Elementos con mayor separación binocular hacia adelante</p>
+                                        <h5>Efecto de Ventana</h5>
+                                        <p>Sensación de mirar a través de una ventana</p>
                                     </div>
                                 </div>
                             </div>
@@ -146,8 +148,8 @@
                                     <img src="imagenes/side by side/positiva 3.1.jpg" class="left-image" alt="Disparidad Positiva 3 - Ojo Izquierdo">
                                     <img src="imagenes/side by side/positiva 3.2.jpg" class="right-image" alt="Disparidad Positiva 3 - Ojo Derecho">
                                     <div class="image-overlay">
-                                        <h5>Efecto Tridimensional Intenso</h5>
-                                        <p>Mayor disparidad que crea sensación de proximidad</p>
+                                        <h5>Recesión Moderada</h5>
+                                        <p>Objetos que retroceden hacia el fondo</p>
                                     </div>
                                 </div>
                             </div>
@@ -156,8 +158,8 @@
                                     <img src="imagenes/side by side/positiva 4.1.jpg" class="left-image" alt="Disparidad Positiva 4 - Ojo Izquierdo">
                                     <img src="imagenes/side by side/positiva 4.2.jpg" class="right-image" alt="Disparidad Positiva 4 - Ojo Derecho">
                                     <div class="image-overlay">
-                                        <h5>Proyección Avanzada</h5>
-                                        <p>Objetos que parecen flotar frente al observador</p>
+                                        <h5>Profundidad Intensa</h5>
+                                        <p>Mayor separación que crea distancia visual</p>
                                     </div>
                                 </div>
                             </div>
@@ -166,8 +168,8 @@
                                     <img src="imagenes/side by side/positiva 5.1.jpg" class="left-image" alt="Disparidad Positiva 5 - Ojo Izquierdo">
                                     <img src="imagenes/side by side/positiva 5.2.jpg" class="right-image" alt="Disparidad Positiva 5 - Ojo Derecho">
                                     <div class="image-overlay">
-                                        <h5>Emergencia Múltiple</h5>
-                                        <p>Varios elementos con diferentes niveles de profundidad</p>
+                                        <h5>Efecto de Túnel</h5>
+                                        <p>Sensación de profundidad como un túnel</p>
                                     </div>
                                 </div>
                             </div>
@@ -176,8 +178,8 @@
                                     <img src="imagenes/side by side/positiva 6.1.jpg" class="left-image" alt="Disparidad Positiva 6 - Ojo Izquierdo">
                                     <img src="imagenes/side by side/positiva 6.2.jpg" class="right-image" alt="Disparidad Positiva 6 - Ojo Derecho">
                                     <div class="image-overlay">
-                                        <h5>Efecto de Alcance</h5>
-                                        <p>Sensación de que los objetos se extienden hacia ti</p>
+                                        <h5>Recesión Avanzada</h5>
+                                        <p>Elementos que se alejan significativamente</p>
                                     </div>
                                 </div>
                             </div>
@@ -186,18 +188,18 @@
                                     <img src="imagenes/side by side/positiva 7.1.jpg" class="left-image" alt="Disparidad Positiva 7 - Ojo Izquierdo">
                                     <img src="imagenes/side by side/positiva 7.2.jpg" class="right-image" alt="Disparidad Positiva 7 - Ojo Derecho">
                                     <div class="image-overlay">
-                                        <h5>Profundidad Dinámica</h5>
-                                        <p>Elementos que crean capas de profundidad progresiva</p>
+                                        <h5>Profundidad Extrema</h5>
+                                        <p>Máximo efecto de hundimiento visual</p>
                                     </div>
                                 </div>
                             </div>
                             <div class="carousel-item">
                                 <div class="image-container side-by-side" onclick="openFullscreen(this)">
                                     <img src="imagenes/side by side/positiva 8.1.jpg" class="left-image" alt="Disparidad Positiva 8 - Ojo Izquierdo">
-                                    <img src="imagenes/side by side/positiva 8.2 .jpg" class="right-image" alt="Disparidad Positiva 8 - Ojo Derecho">
+                                    <img src="imagenes/side by side/positiva 8.2.jpg" class="right-image" alt="Disparidad Positiva 8 - Ojo Derecho">
                                     <div class="image-overlay">
-                                        <h5>Emergencia Extrema</h5>
-                                        <p>Máximo efecto de proyección hacia el espectador</p>
+                                        <h5>Inmersión Completa</h5>
+                                        <p>Sensación de estar dentro de la imagen</p>
                                     </div>
                                 </div>
                             </div>
@@ -206,11 +208,13 @@
                                     <img src="imagenes/side by side/positiva 10.1.jpg" class="left-image" alt="Disparidad Positiva 10 - Ojo Izquierdo">
                                     <img src="imagenes/side by side/positiva 10.2.jpg" class="right-image" alt="Disparidad Positiva 10 - Ojo Derecho">
                                     <div class="image-overlay">
-                                        <h5>Efecto Inmersivo Completo</h5>
-                                        <p>Combinación de elementos con disparidad positiva intensa</p>
+                                        <h5>Efecto Ventana+</h5>
+                                        <p>Combinación de elementos con fuerte recesión</p>
                                     </div>
                                 </div>
                             </div>
+
+                            <!-- Anaglifos positivos (mismo src en L/R) -->
                             <div class="carousel-item">
                                 <div class="image-container anaglyph" onclick="openFullscreen(this)">
                                     <img src="imagenes/positiva/disparidad positiva 9.jpg" class="left-image" alt="Disparidad Positiva 9">
@@ -253,33 +257,33 @@
                             </div>
                         </div>
                         
-                        <button class="carousel-control-prev" type="button" data-bs-target="#positiveCarousel" data-bs-slide="prev">
+                        <button class="carousel-control-prev" type="button" data-bs-target="#positiveCarousel" data-bs-slide="prev" aria-label="Anterior">
                             <span class="carousel-control-prev-icon"></span>
                         </button>
-                        <button class="carousel-control-next" type="button" data-bs-target="#positiveCarousel" data-bs-slide="next">
+                        <button class="carousel-control-next" type="button" data-bs-target="#positiveCarousel" data-bs-slide="next" aria-label="Siguiente">
                             <span class="carousel-control-next-icon"></span>
                         </button>
                     </div>
                 </div>
 
                 <!-- Disparidad Neutra -->
-                <div class="tab-pane fade" id="neutral">
+                <div class="tab-pane fade" id="neutral" role="tabpanel" aria-labelledby="neutral-tab">
                     <div class="disparity-info mb-4">
                         <h3><i class="bi bi-dash-circle text-warning me-2"></i>Disparidad Neutra</h3>
-                        <p>Los objetos se perciben en el plano de la pantalla, sin efecto de profundidad adicional.</p>
+                        <p>Los objetos se perciben <strong>en el plano de la pantalla</strong>, sin efecto de profundidad adicional.</p>
                     </div>
                     
                     <div id="neutralCarousel" class="carousel slide stereo-carousel" data-bs-ride="carousel">
                         <div class="carousel-indicators">
-                            <button type="button" data-bs-target="#neutralCarousel" data-bs-slide-to="0" class="active"></button>
-                            <button type="button" data-bs-target="#neutralCarousel" data-bs-slide-to="1"></button>
-                            <button type="button" data-bs-target="#neutralCarousel" data-bs-slide-to="2"></button>
-                            <button type="button" data-bs-target="#neutralCarousel" data-bs-slide-to="3"></button>
-                            <button type="button" data-bs-target="#neutralCarousel" data-bs-slide-to="4"></button>
-                            <button type="button" data-bs-target="#neutralCarousel" data-bs-slide-to="5"></button>
-                            <button type="button" data-bs-target="#neutralCarousel" data-bs-slide-to="6"></button>
-                            <button type="button" data-bs-target="#neutralCarousel" data-bs-slide-to="7"></button>
-                            <button type="button" data-bs-target="#neutralCarousel" data-bs-slide-to="8"></button>
+                            <button type="button" data-bs-target="#neutralCarousel" data-bs-slide-to="0" class="active" aria-label="Neutra 1"></button>
+                            <button type="button" data-bs-target="#neutralCarousel" data-bs-slide-to="1" aria-label="Neutra 2"></button>
+                            <button type="button" data-bs-target="#neutralCarousel" data-bs-slide-to="2" aria-label="Neutra 3"></button>
+                            <button type="button" data-bs-target="#neutralCarousel" data-bs-slide-to="3" aria-label="Neutra 4"></button>
+                            <button type="button" data-bs-target="#neutralCarousel" data-bs-slide-to="4" aria-label="Neutra 5"></button>
+                            <button type="button" data-bs-target="#neutralCarousel" data-bs-slide-to="5" aria-label="Neutra 6"></button>
+                            <button type="button" data-bs-target="#neutralCarousel" data-bs-slide-to="6" aria-label="Neutra 7"></button>
+                            <button type="button" data-bs-target="#neutralCarousel" data-bs-slide-to="7" aria-label="Neutra 8"></button>
+                            <button type="button" data-bs-target="#neutralCarousel" data-bs-slide-to="8" aria-label="Neutra 9"></button>
                         </div>
                         
                         <div class="carousel-inner">
@@ -353,6 +357,8 @@
                                     </div>
                                 </div>
                             </div>
+
+                            <!-- Anaglifos neutros -->
                             <div class="carousel-item">
                                 <div class="image-container anaglyph" onclick="openFullscreen(this)">
                                     <img src="imagenes/nula/nula 3.jpg" class="left-image" alt="Disparidad Neutra 3">
@@ -375,34 +381,34 @@
                             </div>
                         </div>
                         
-                        <button class="carousel-control-prev" type="button" data-bs-target="#neutralCarousel" data-bs-slide="prev">
+                        <button class="carousel-control-prev" type="button" data-bs-target="#neutralCarousel" data-bs-slide="prev" aria-label="Anterior">
                             <span class="carousel-control-prev-icon"></span>
                         </button>
-                        <button class="carousel-control-next" type="button" data-bs-target="#neutralCarousel" data-bs-slide="next">
+                        <button class="carousel-control-next" type="button" data-bs-target="#neutralCarousel" data-bs-slide="next" aria-label="Siguiente">
                             <span class="carousel-control-next-icon"></span>
                         </button>
                     </div>
                 </div>
 
                 <!-- Disparidad Negativa -->
-                <div class="tab-pane fade" id="negative">
+                <div class="tab-pane fade" id="negative" role="tabpanel" aria-labelledby="negative-tab">
                     <div class="disparity-info mb-4">
                         <h3><i class="bi bi-arrow-down-circle text-danger me-2"></i>Disparidad Negativa</h3>
-                        <p>Los objetos aparecen detrás del plano de la pantalla, creando profundidad hacia el interior.</p>
+                        <p>Los objetos aparecen <strong>delante del plano de la pantalla</strong>, proyectándose hacia el espectador.</p>
                     </div>
                     
                     <div id="negativeCarousel" class="carousel slide stereo-carousel" data-bs-ride="carousel">
                         <div class="carousel-indicators">
-                            <button type="button" data-bs-target="#negativeCarousel" data-bs-slide-to="0" class="active"></button>
-                            <button type="button" data-bs-target="#negativeCarousel" data-bs-slide-to="1"></button>
-                            <button type="button" data-bs-target="#negativeCarousel" data-bs-slide-to="2"></button>
-                            <button type="button" data-bs-target="#negativeCarousel" data-bs-slide-to="3"></button>
-                            <button type="button" data-bs-target="#negativeCarousel" data-bs-slide-to="4"></button>
-                            <button type="button" data-bs-target="#negativeCarousel" data-bs-slide-to="5"></button>
-                            <button type="button" data-bs-target="#negativeCarousel" data-bs-slide-to="6"></button>
-                            <button type="button" data-bs-target="#negativeCarousel" data-bs-slide-to="7"></button>
-                            <button type="button" data-bs-target="#negativeCarousel" data-bs-slide-to="8"></button>
-                            <button type="button" data-bs-target="#negativeCarousel" data-bs-slide-to="9"></button>
+                            <button type="button" data-bs-target="#negativeCarousel" data-bs-slide-to="0" class="active" aria-label="Negativa 1"></button>
+                            <button type="button" data-bs-target="#negativeCarousel" data-bs-slide-to="1" aria-label="Negativa 2"></button>
+                            <button type="button" data-bs-target="#negativeCarousel" data-bs-slide-to="2" aria-label="Negativa 3"></button>
+                            <button type="button" data-bs-target="#negativeCarousel" data-bs-slide-to="3" aria-label="Negativa 4"></button>
+                            <button type="button" data-bs-target="#negativeCarousel" data-bs-slide-to="4" aria-label="Negativa 5"></button>
+                            <button type="button" data-bs-target="#negativeCarousel" data-bs-slide-to="5" aria-label="Negativa 6"></button>
+                            <button type="button" data-bs-target="#negativeCarousel" data-bs-slide-to="6" aria-label="Negativa 7"></button>
+                            <button type="button" data-bs-target="#negativeCarousel" data-bs-slide-to="7" aria-label="Negativa 8"></button>
+                            <button type="button" data-bs-target="#negativeCarousel" data-bs-slide-to="8" aria-label="Negativa 9"></button>
+                            <button type="button" data-bs-target="#negativeCarousel" data-bs-slide-to="9" aria-label="Negativa 10"></button>
                         </div>
                         
                         <div class="carousel-inner">
@@ -411,8 +417,8 @@
                                     <img src="imagenes/side by side/negativa 1.1.jpg" class="left-image" alt="Disparidad Negativa 1 - Ojo Izquierdo">
                                     <img src="imagenes/side by side/negativa 1.2.jpg" class="right-image" alt="Disparidad Negativa 1 - Ojo Derecho">
                                     <div class="image-overlay">
-                                        <h5>Profundidad Básica</h5>
-                                        <p>Elementos que se hunden ligeramente en la pantalla</p>
+                                        <h5>Efecto de Emergencia Básico</h5>
+                                        <p>Objetos que sobresalen del plano de la pantalla</p>
                                     </div>
                                 </div>
                             </div>
@@ -421,8 +427,8 @@
                                     <img src="imagenes/side by side/negativa 2.1.jpg" class="left-image" alt="Disparidad Negativa 2 - Ojo Izquierdo">
                                     <img src="imagenes/side by side/negativa 2.2.jpg" class="right-image" alt="Disparidad Negativa 2 - Ojo Derecho">
                                     <div class="image-overlay">
-                                        <h5>Efecto de Ventana</h5>
-                                        <p>Sensación de mirar a través de una ventana</p>
+                                        <h5>Profundidad “Hacia Ti” Moderada</h5>
+                                        <p>Separación binocular que acerca los elementos al observador</p>
                                     </div>
                                 </div>
                             </div>
@@ -431,8 +437,8 @@
                                     <img src="imagenes/side by side/negativa 4.1.jpg" class="left-image" alt="Disparidad Negativa 4 - Ojo Izquierdo">
                                     <img src="imagenes/side by side/negativa 4.2.jpg" class="right-image" alt="Disparidad Negativa 4 - Ojo Derecho">
                                     <div class="image-overlay">
-                                        <h5>Recesión Moderada</h5>
-                                        <p>Objetos que retroceden hacia el fondo</p>
+                                        <h5>Efecto Tridimensional Intenso</h5>
+                                        <p>Mayor disparidad que incrementa la proximidad</p>
                                     </div>
                                 </div>
                             </div>
@@ -441,8 +447,8 @@
                                     <img src="imagenes/side by side/negativa 5.1.jpg" class="left-image" alt="Disparidad Negativa 5 - Ojo Izquierdo">
                                     <img src="imagenes/side by side/negativa 5.2.jpg" class="right-image" alt="Disparidad Negativa 5 - Ojo Derecho">
                                     <div class="image-overlay">
-                                        <h5>Profundidad Intensa</h5>
-                                        <p>Mayor separación que crea distancia visual</p>
+                                        <h5>Proyección Avanzada</h5>
+                                        <p>Objetos que parecen flotar frente al espectador</p>
                                     </div>
                                 </div>
                             </div>
@@ -451,8 +457,8 @@
                                     <img src="imagenes/side by side/negativa 6.1.jpg" class="left-image" alt="Disparidad Negativa 6 - Ojo Izquierdo">
                                     <img src="imagenes/side by side/negativa 6.2.jpg" class="right-image" alt="Disparidad Negativa 6 - Ojo Derecho">
                                     <div class="image-overlay">
-                                        <h5>Efecto de Túnel</h5>
-                                        <p>Sensación de profundidad como un túnel</p>
+                                        <h5>Emergencia Múltiple</h5>
+                                        <p>Varios elementos con diferentes niveles de relieve frontal</p>
                                     </div>
                                 </div>
                             </div>
@@ -461,8 +467,8 @@
                                     <img src="imagenes/side by side/negativa 7.1.jpg" class="left-image" alt="Disparidad Negativa 7 - Ojo Izquierdo">
                                     <img src="imagenes/side by side/negativa 7.2.jpg" class="right-image" alt="Disparidad Negativa 7 - Ojo Derecho">
                                     <div class="image-overlay">
-                                        <h5>Recesión Avanzada</h5>
-                                        <p>Elementos que se alejan significativamente</p>
+                                        <h5>Efecto de Alcance</h5>
+                                        <p>Sensación de que los objetos se extienden hacia ti</p>
                                     </div>
                                 </div>
                             </div>
@@ -471,8 +477,8 @@
                                     <img src="imagenes/side by side/negativa 8.1.jpg" class="left-image" alt="Disparidad Negativa 8 - Ojo Izquierdo">
                                     <img src="imagenes/side by side/negativa 8.2.jpg" class="right-image" alt="Disparidad Negativa 8 - Ojo Derecho">
                                     <div class="image-overlay">
-                                        <h5>Profundidad Extrema</h5>
-                                        <p>Máximo efecto de hundimiento visual</p>
+                                        <h5>Emergencia Dinámica</h5>
+                                        <p>Capas de relieve progresivo hacia afuera</p>
                                     </div>
                                 </div>
                             </div>
@@ -481,11 +487,13 @@
                                     <img src="imagenes/side by side/negativa 10.1.jpg" class="left-image" alt="Disparidad Negativa 10 - Ojo Izquierdo">
                                     <img src="imagenes/side by side/negativa 10.2.jpg" class="right-image" alt="Disparidad Negativa 10 - Ojo Derecho">
                                     <div class="image-overlay">
-                                        <h5>Inmersión Completa</h5>
-                                        <p>Sensación de estar dentro de la imagen</p>
+                                        <h5>Emergencia Extrema</h5>
+                                        <p>Máximo efecto de proyección hacia el espectador</p>
                                     </div>
                                 </div>
                             </div>
+
+                            <!-- Anaglifos negativos (mismo src en L/R) -->
                             <div class="carousel-item">
                                 <div class="image-container anaglyph" onclick="openFullscreen(this)">
                                     <img src="imagenes/negativa/negativa 3.jpg" class="left-image" alt="Disparidad Negativa 3">
@@ -508,10 +516,10 @@
                             </div>
                         </div>
                         
-                        <button class="carousel-control-prev" type="button" data-bs-target="#negativeCarousel" data-bs-slide="prev">
+                        <button class="carousel-control-prev" type="button" data-bs-target="#negativeCarousel" data-bs-slide="prev" aria-label="Anterior">
                             <span class="carousel-control-prev-icon"></span>
                         </button>
-                        <button class="carousel-control-next" type="button" data-bs-target="#negativeCarousel" data-bs-slide="next">
+                        <button class="carousel-control-next" type="button" data-bs-target="#negativeCarousel" data-bs-slide="next" aria-label="Siguiente">
                             <span class="carousel-control-next-icon"></span>
                         </button>
                     </div>
