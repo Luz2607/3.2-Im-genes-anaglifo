@@ -1,4 +1,4 @@
-// =========================
+// ========================= 
 // Variables globales
 // =========================
 let currentMode = 'side-by-side';
@@ -781,7 +781,7 @@ function getImageDescription(disparityType, imageIndex) {
     'Estado ideal de percepción tridimensional'
   ],
   negative: [ // hacia el espectador (sale de la pantalla)
-    'Objetos simples que sobresalen del plano de la pantalla',
+    'Objetos que sobresalen del plano de la pantalla',
     'Elementos con mayor separación binocular hacia adelante',
     'Mayor disparidad que crea sensación de proximidad',
     'Objetos que parecen flotar frente al observador',
@@ -814,4 +814,317 @@ window.setFilter = setFilter;
   link.type = 'image/svg+xml';
   link.href = '/favicon.svg'; // o el data:URL si prefieres inline
   document.head.appendChild(link);
+})();
+
+
+// ====================================================================
+// =================  EXTENSIONES: DESCARGA + SEPARACIÓN  =============
+// (No tocan lo ya funcional; se inyectan toolbars automáticamente)
+// ====================================================================
+
+// Inicializa toolbars cuando el DOM esté listo y cada vez que cambie el modo
+document.addEventListener('DOMContentLoaded', () => {
+  setTimeout(initViewerToolbars, 0);
+});
+window.addEventListener('load', () => {
+  setTimeout(initViewerToolbars, 300);
+});
+
+// Observa cambios en cada carrusel para reactivar la toolbar tras rebuilds
+const _toolbarObservers = new WeakMap();
+function initViewerToolbars() {
+  document.querySelectorAll('.carousel').forEach(carousel => {
+    if (!carousel || carousel.dataset.toolsReady === 'true') {
+      // ya configurado
+    } else {
+      createToolbarForCarousel(carousel);
+    }
+    // Observer para reconstrucciones de slides
+    if (!_toolbarObservers.has(carousel)) {
+      const obs = new MutationObserver(() => {
+        updateToolbarState(carousel);
+      });
+      const inner = carousel.querySelector('.carousel-inner');
+      if (inner) {
+        obs.observe(inner, { childList: true, subtree: true });
+        _toolbarObservers.set(carousel, obs);
+      }
+    }
+  });
+}
+
+function createToolbarForCarousel(carousel) {
+  // contenedor toolbar
+  const bar = document.createElement('div');
+  bar.className = 'viewer-toolbar';
+  bar.style.cssText = `
+    display:flex;gap:12px;align-items:center;justify-content:flex-end;
+    padding:10px 12px;margin:8px 0 4px 0;border:1px solid rgba(99,102,241,.25);
+    border-radius:12px;background:rgba(17,17,35,.55);backdrop-filter:saturate(130%) blur(6px);
+  `;
+
+  // Slider de separación
+  const sepWrap = document.createElement('div');
+  sepWrap.style.cssText = 'display:flex;align-items:center;gap:8px;';
+  const sepLabel = document.createElement('span');
+  sepLabel.textContent = 'Separación';
+  sepLabel.style.cssText = 'color:#cbd5e1;font-size:.9rem;';
+  const sepInput = document.createElement('input');
+  sepInput.type = 'range';
+  sepInput.min = '-150';
+  sepInput.max = '150';
+  sepInput.value = '0';
+  sepInput.step = '1';
+  sepInput.style.cssText = 'width:160px;accent-color:#6366f1;';
+  sepInput.addEventListener('input', () => {
+    setSeparation(carousel.id, parseInt(sepInput.value, 10) || 0);
+  });
+  sepWrap.appendChild(sepLabel);
+  sepWrap.appendChild(sepInput);
+
+  // Botón descargar
+  const dlBtn = document.createElement('button');
+  dlBtn.type = 'button';
+  dlBtn.className = 'btn btn-outline-primary';
+  dlBtn.textContent = 'Descargar';
+  dlBtn.style.cssText = 'padding:.45rem 1rem;border-radius:10px;';
+  dlBtn.addEventListener('click', () => downloadCurrent(carousel.id));
+
+  // Nota anaglifo (discreta)
+  const note = document.createElement('span');
+  note.textContent = 'Usa lentes anaglifos rojo/cian';
+  note.style.cssText = 'margin-left:auto;color:#a5b4fc;font-size:.85rem;opacity:.9;display:none;';
+
+  bar.appendChild(sepWrap);
+  bar.appendChild(dlBtn);
+  bar.appendChild(note);
+
+  // Inserta toolbar justo DESPUÉS del carrusel (no altera su estructura)
+  carousel.insertAdjacentElement('afterend', bar);
+  carousel.dataset.toolsReady = 'true';
+
+  // Guarda referencias
+  bar.dataset.carouselId = carousel.id;
+  bar._sepInput = sepInput;
+  bar._note = note;
+
+  updateToolbarState(carousel);
+}
+
+function updateToolbarState(carousel) {
+  const bar = carousel.nextElementSibling;
+  if (!bar || bar.className !== 'viewer-toolbar') return;
+
+  // Resetea separación visual aplicada
+  setSeparation(carousel.id, parseInt(bar._sepInput?.value || '0', 10));
+
+  // Modo actual:
+  if (currentMode === 'anaglyph') {
+    // Deshabilitar slider en anaglifo simple
+    bar._sepInput.disabled = true;
+    bar._sepInput.style.opacity = '.45';
+    bar._note.style.display = 'inline';
+  } else {
+    bar._sepInput.disabled = false;
+    bar._sepInput.style.opacity = '1';
+    bar._note.style.display = 'none';
+  }
+}
+
+// ======= Lógica de separación (solo SxS y Anaglifo S×S) =======
+function setSeparation(carouselId, px) {
+  try {
+    const carousel = document.getElementById(carouselId);
+    if (!carousel) return;
+    if (currentMode === 'anaglyph') return; // no aplica
+
+    const active = carousel.querySelector('.carousel-item.active .image-container');
+    if (!active) return;
+    const left = active.querySelector('.left-image');
+    const right = active.querySelector('.right-image');
+    if (!left || !right) return;
+
+    // desplazamos mitad a cada lado (efecto relativo)
+    left.style.transform = `translateX(${-px/2}px)`;
+    right.style.transform = `translateX(${px/2}px)`;
+  } catch (e) {
+    console.warn('setSeparation error:', e);
+  }
+}
+
+// ======= Descarga según modo =======
+async function downloadCurrent(carouselId) {
+  try {
+    if (currentMode === 'anaglyph') {
+      const src = getCurrentAnaglyphSrc(carouselId);
+      if (!src) return console.warn('No se encontró imagen anaglifo actual');
+      await downloadURL(src, filenameFromSrc(src));
+      return;
+    }
+
+    // Para SxS y Anaglifo S×S: descargamos combinado respetando separación actual
+    const { leftSrc, rightSrc } = getCurrentPairSrcs(carouselId);
+    if (!leftSrc || !rightSrc) return console.warn('Fuentes SxS no disponibles');
+
+    const sep = getCurrentSeparationValue(carouselId) || 0;
+    const blob = await buildSideBySideCanvasBlob(leftSrc, rightSrc, sep);
+    triggerBlobDownload(blob, 'stereo_sxs.png');
+  } catch (e) {
+    console.error('Error al descargar:', e);
+  }
+}
+
+function getCurrentSeparationValue(carouselId) {
+  const bar = document.getElementById(carouselId)?.nextElementSibling;
+  if (bar && bar._sepInput) return parseInt(bar._sepInput.value || '0', 10);
+  return 0;
+}
+
+function getCurrentPairSrcs(carouselId) {
+  const carousel = document.getElementById(carouselId);
+  if (!carousel) return {};
+  const active = carousel.querySelector('.carousel-item.active .image-container');
+  if (!active) return {};
+  const left = active.querySelector('.left-image');
+  const right = active.querySelector('.right-image');
+  return { leftSrc: left?.src || null, rightSrc: right?.src || null };
+}
+
+function getCurrentAnaglyphSrc(carouselId) {
+  const carousel = document.getElementById(carouselId);
+  if (!carousel) return null;
+  const active = carousel.querySelector('.carousel-item.active');
+  if (!active) return null;
+
+  // Buscar la imagen "principal" (más grande) dentro del item activo
+  const imgs = Array.from(active.querySelectorAll('img'));
+  if (!imgs.length) return null;
+  let main = imgs[0], maxArea = 0;
+  imgs.forEach(im => {
+    const area = (im.clientWidth || 0) * (im.clientHeight || 0);
+    if (area > maxArea) { maxArea = area; main = im; }
+  });
+  return main?.src || null;
+}
+
+async function buildSideBySideCanvasBlob(leftSrc, rightSrc, separationPx) {
+  const [leftImg, rightImg] = await Promise.all([loadImage(leftSrc), loadImage(rightSrc)]);
+  // Normalizamos alturas
+  const height = Math.max(leftImg.naturalHeight, rightImg.naturalHeight);
+  const scaleL = height / leftImg.naturalHeight;
+  const scaleR = height / rightImg.naturalHeight;
+  const wL = Math.round(leftImg.naturalWidth * scaleL);
+  const wR = Math.round(rightImg.naturalWidth * scaleR);
+
+  // Canvas: unión simple de ambos anchos + separación absoluta aplicada (mitad por lado)
+  const canvas = document.createElement('canvas');
+  canvas.width = wL + wR;
+  canvas.height = height;
+  const ctx = canvas.getContext('2d');
+
+  // offsets por separación (neg/pos hacia centro/exterior)
+  const offsetL = Math.round(-separationPx / 2);
+  const offsetR = Math.round(separationPx / 2);
+
+  // Dibujar
+  ctx.drawImage(leftImg, 0 + offsetL, 0, wL, height);
+  ctx.drawImage(rightImg, wL + offsetR, 0, wR, height);
+
+  return new Promise(resolve => canvas.toBlob(resolve, 'image/png', 0.92));
+}
+
+function loadImage(src) {
+  return new Promise((resolve, reject) => {
+    const im = new Image();
+    im.crossOrigin = 'anonymous';
+    im.onload = () => resolve(im);
+    im.onerror = reject;
+    im.src = src;
+  });
+}
+
+async function downloadURL(url, filename) {
+  // Intento directo
+  try {
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename || 'imagen.png';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+  } catch {
+    // fallback: fetch->blob
+    const resp = await fetch(url);
+    const blob = await resp.blob();
+    triggerBlobDownload(blob, filename || 'imagen.png');
+  }
+}
+
+function triggerBlobDownload(blob, filename) {
+  const blobUrl = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = blobUrl;
+  a.download = filename || 'descarga.png';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(() => URL.revokeObjectURL(blobUrl), 1000);
+}
+
+function filenameFromSrc(src) {
+  try {
+    const u = new URL(src, window.location.href);
+    const base = u.pathname.split('/').pop() || 'imagen';
+    return base.replace(/\?.*$/, '');
+  } catch {
+    return 'imagen.png';
+  }
+}
+// ===== Avatar Zoom (no interfiere con lo demás) =====
+(function setupAvatarZoomInit(){
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', setupAvatarZoom);
+  } else {
+    setupAvatarZoom();
+  }
+
+  function setupAvatarZoom(){
+    const avatar = document.querySelector('.developer-avatar');
+    if (!avatar) return;
+
+    // Crea la capa/backdrop y clona el avatar dentro
+    const backdrop = document.createElement('div');
+    backdrop.className = 'avatar-backdrop';
+
+    const zoom = document.createElement('div');
+    zoom.className = 'avatar-zoom';
+
+    // Si tu avatar tiene <img>, lo clonamos; si no, clonamos todo el contenedor
+    const img = avatar.querySelector('img');
+    if (img) {
+      const imgClone = img.cloneNode(true);
+      zoom.appendChild(imgClone);
+    } else {
+      // fallback: clonar el contenido del avatar (por si siguiera un <i> de icono)
+      zoom.appendChild(avatar.cloneNode(true));
+    }
+
+    backdrop.appendChild(zoom);
+    document.body.appendChild(backdrop);
+
+    // Abrir
+    avatar.addEventListener('click', () => {
+      backdrop.classList.add('show');
+    });
+
+    // Cerrar al hacer click fuera del círculo
+    backdrop.addEventListener('click', (e) => {
+      if (e.target === backdrop) backdrop.classList.remove('show');
+    });
+
+    // Cerrar con ESC
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') backdrop.classList.remove('show');
+    });
+  }
 })();
